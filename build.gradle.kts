@@ -1,17 +1,16 @@
 plugins {
-    java
-    war
-    id("org.springframework.boot") version "3.4.4"
-    id("io.spring.dependency-management") version "1.1.7"
+    id("org.springframework.boot") version "3.2.4"
+    id("io.spring.dependency-management") version "1.1.4"
+    kotlin("jvm") version "1.9.23"
+    kotlin("plugin.spring") version "1.9.23"
+    kotlin("plugin.jpa") version "1.9.23"
 }
 
 group = "com.example"
 version = "0.0.1-SNAPSHOT"
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
+    sourceCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
@@ -25,19 +24,30 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    // Spring Boot 기본 웹
     implementation("org.springframework.boot:spring-boot-starter-web")
-    compileOnly("org.projectlombok:lombok")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-    annotationProcessor("org.projectlombok:lombok")
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    // JSP 관련 의존성 추가
+    
+    // JSP 관련 의존성
     implementation("org.apache.tomcat.embed:tomcat-embed-jasper")
     implementation("jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api")
     implementation("org.glassfish.web:jakarta.servlet.jsp.jstl")
+    
+    // JPA 의존성
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    
+    // MariaDB 드라이버
+    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    
+    // Lombok
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
+    
+    // 기타 유용한 의존성
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-devtools")
+    
+    // 테스트 의존성
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<Test> {
